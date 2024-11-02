@@ -4,35 +4,41 @@
 import matplotlib.pyplot as plt
 import math
 
+#define the first derivative of Y
+def Yprim(x, y):
+    return 2 * x * y
 
-#initial x value
+def euler_method(Yprim, x0, y0, xf, h):
+    # Calculate number of steps
+    n = int((xf - x0) / h)
+    
+    # Initialize x and y variables and lists
+    x, y = x0, y0
+    X, Y = [x0], [y0]
+    
+    for i in range(1, n + 1):
+        # Calculate value of yn
+        y += h * Yprim(x, y)
+        Y.append(y)
+        
+        # Calculate value of xn
+        x += h
+        X.append(x)
+
+    return X, Y
+
+#Initial values
 x0 = 1
-#initial y value
 y0 = 1
-#final value of x
 xf = 1.5
-#step size
 h = 0.1
-#number of steps
-n = (xf-x0)/h
 
-#Initialize x and y variables and vectors 
-x, y = x0, y0
-X, Y = [x0], [y0]
-for i in range(1,int(n)+1):
-    print(i)
-    #function for y'
-    Yprim = 2*x*y
-    #calculate value of yn
-    y += h*Yprim
-    Y.append(y)
-    #calculate value of xn
-    x += h
-    X.append(x)
+# Call the Euler method
+X, Y = euler_method(Yprim, x0, y0, xf, h)
 
 #%%Compare to value of y
 Yreal = []
-for i in range(0,int(n)+1):
+for i in range(len(X)):
     x= X[i]
     Yreal.append(math.exp((x**2)-1))
 
